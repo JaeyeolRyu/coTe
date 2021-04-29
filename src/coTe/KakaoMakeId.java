@@ -1,6 +1,6 @@
 package coTe;
 
-public class Solution {
+public class KakaoMakeId {
 	 
 	public String solution(String new_id) {
 
