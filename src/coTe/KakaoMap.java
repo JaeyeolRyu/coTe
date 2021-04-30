@@ -22,15 +22,15 @@ class KakaoMap {
 		int temp;
 		String[][] map = new String[n][n];
 
-		for (int i = 0; i < n; i++) {
+		for (int i = 0; i < n; i++) {  // 지도의 빈공간을 " "로 나타냈으므로 " "로 배열에 값을 넣어준다.
 			for (int j = 0; j < n; j++) {
 
-				map[i][j] = " ";
+				map[i][j] = " "; 
 			}
 
 		}
 
-		for (int i = 0; i < n; i++) {
+		for (int i = 0; i < n; i++) { // 2진법으로 나타냈을때 1인부분에다가 #넣기
 			temp = n - 1;
 
 			map1 = (arr1[i] | arr2[i]);
