@@ -100,7 +100,7 @@ class KaKaoRankingSearch {
     	} else {
     		
     		List<Integer> list = map.get(query);
-  
+  //원래 Collections.sort썻던 위치
     		int first = 0;
     		int mid = 0;
     		int last = list.size()-1;
