@@ -1,105 +1,105 @@
-package coTe;; 
+package coTe;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 class Solution {
-	static String[][] relation;
-	static boolean[] successKey;
-	static boolean[] visit;
-	static int col;
-	static int row;
-	static int cnt = 0;
-	
-	public static void main(String[] args) throws Exception {
+	static Map<String, String> songInfo = new HashMap<>();
+    static Map<Integer, String> posSong = new HashMap<>();
+    
+	public static void main(String[] args) {
 		
-//		String[][] relation = {{"100","ryan","music","2"},{"200","apeach","math","2"},{"300","tube","computer","3"},{"400","con","computer","4"},{"500","muzi","music","3"},{"600","apeach","music","2"}};
-		String[][] relation = {{"a","aa"},{"aa","a"},{"a","a"}};
-		int answer = solution(relation);
+		String m = "CC#BCC#BCC#BCC#B";
+		String[] musicinfos = {"03:00,03:30,FOO,CC#B", "04:00,04:08,BAR,CC#BCC#BCC#B"};
+		
+		String answer = solution(m, musicinfos);
 		
 		System.out.println(answer);
 	}
-	
-    public static int solution(String[][] relations) {
-        
-    	relation = relations;
-    	successKey = new boolean[relation.length];
-    	visit = new boolean[relation.length];
-    	int answer = 0;
-    	
-    	col = relation[0].length;
-    	row = relation.length;
-    	
-    	for(int i = 1; i < col; i++) {
-    		int tempCnt = 0;
-    		for(boolean remainCol : successKey ) { // 후보키 선정되지 않은 컬럼의 갯수파악
-    			if(!remainCol) {
-    				tempCnt++;
-    			}
-    		}
-    		if(i <= tempCnt) {	// 후보키 선정되지 않은 컬럼이 조합할 키 갯수보다 많으면 keyCombination들어감.
-    			int[] tempArr = new int[i];
-        		keyCombination(i,0,tempArr);
-    		} else {
-    			break;
-    		}
-    			
-    	}
-    	answer = cnt;
-    	
-    	return answer;
-    }
-    public static void keyCombination(int rowCnt, int depth,int[] tempArr) { //1개 2개 3개 조합만드는곳
-    	
-    	if(rowCnt == depth) {
-    		
-    		findCandidateKey(tempArr);
-    		return;
-    	}
-    	
-    	for(int i = 0 ; i < col; i++) {
-    		
-    		if(!successKey[i] && !visit[i]) {
-    			
-    			tempArr[depth] = i;
-    			visit[i] = true;
-    			keyCombination(rowCnt, depth+1, tempArr);
-    			visit[i] = false;
-    			if(successKey[tempArr[0]]) { // 예를들어 1,2키가 조합된상태면 1,3 1,4...를 건너뛰기위한 조건식 
-    				return;
-    			}
-    		}
-    		
-    	}
-    	
-    }
-    
-    public static void findCandidateKey(int[] tempArr) { //조합된 컬럼들을 String배열에 넣어 비교하는 메소드
-    	
-    	String[] combKey = new String[row];
-    	
-    	for(int i = 0 ; i < row; i++) {
-    		
-    		for(int j = 0 ; j < tempArr.length; j++) {
-    			
-    			combKey[i] += relation[i][tempArr[j]];
-    		}
-    	}
-    	
-    	for(int i = 0 ; i < row; i++) {
-    		
-    		for(int j = i+1; j < row; j++) {
-    			
-    			if(combKey[i] == combKey[j]) { // 키값이 같으면 return;
-    				return;
-    			}
-    		}
-    		
-    	}
-    										// 여기 왔으면 후보키로써 조건 만족한 상태
-    	for(int num : tempArr) {
-    		successKey[num] = true;	// 후보키로 선정된 컬럼들을 true로 바꾼다.
-    	}
-    	cnt++;
-    	
-    }
-    
 
+	public static String solution(String m, String[] musicinfos) {
+        String answer = "";
+        String melody = m.replace("A#", "a").replace("B#", "b").replace("C#", "c").replace("D#", "d").replace("E#", "e").replace("F#", "f").replace("G#", "g"); //#처리를 해주기위해 #앞에 문자를 소문자로 바꾼다.
+        System.out.println("들은노래 " + melody);
+        int songTime = 0;
+        String songName ="";	
+        String songMelody ="";
+        
+        for(String str : musicinfos) {
+        	
+        	String[] tempArr = str.split(":|,");
+        	songTime = (Integer.parseInt(tempArr[2])*60+Integer.parseInt(tempArr[3])) - (Integer.parseInt(tempArr[0])*60+Integer.parseInt(tempArr[1]));
+
+        	songName = tempArr[4];
+        	songMelody = tempArr[5].replace("A#", "a").replace("B#", "b").replace("C#", "c").replace("D#", "d").replace("E#", "e").replace("F#", "f").replace("G#", "g"); //#처리를 해주기위해 #앞에 문자를 소문자로 바꾼다.
+
+        	String totalMelody = "";
+        	int tempNum = 0;
+        	System.out.println("노래길이 " +songMelody);
+        	for(int i = 0; i< songTime; i++ ) {
+        		
+    			totalMelody += songMelody.charAt(tempNum);
+        	
+        		tempNum++;
+        		if(tempNum == songMelody.length()) {
+        			tempNum = 0;
+        		}
+        	}
+        	System.out.println("토탈길이 " +totalMelody);
+        	songInfo.put(songName, totalMelody);
+        }
+        
+        Iterator<Map.Entry<String, String>> it = songInfo.entrySet().iterator();
+        
+        while(it.hasNext()) { // 일치하는 곳 있는지 확인
+        	
+        	Map.Entry<String, String> entry = it.next();
+        	String sName = entry.getKey();
+        	String tMelody = entry.getValue();
+    
+        	if(tMelody.length() <= melody.length()) { 
+        		
+        		if(melody.substring(0, tMelody.length()).equals(tMelody)) {
+        			
+        			posSong.put(tMelody.length(), sName);
+        		}
+        			
+        	} else {
+        		
+            	for(int i = 0 ; i <= tMelody.length() - melody.length(); i++) {
+            		if(melody.charAt(0) == tMelody.charAt(i)) {
+            			if(melody.equals(tMelody.substring(i, i+melody.length()))) {
+            				
+            				if(!posSong.containsKey((Object)sName)) { // 시간이 같은 곡이있다면 먼저 들어온곡으로 하기위함
+            					posSong.put(tMelody.length(), sName);
+            					
+            				}
+            				break;
+            			}
+            		}
+            	}	
+            }
+        }
+
+        if(posSong.isEmpty()) {
+        	return "(None)";
+        } else {
+        	
+//        	TreeMap<Integer, String> treeMap = new TreeMap<>(Collections.reverseOrder());
+//        	treeMap.putAll(posSong);
+//        	
+//        	answer = treeMap.get(treeMap.firstKey());
+        	
+        	Object[] keySet = posSong.keySet().toArray();
+        	Arrays.sort(keySet, Collections.reverseOrder());
+        	answer = posSong.get(keySet[0]);
+        }
+        
+        return answer;
+    }
+    
+    
 }
