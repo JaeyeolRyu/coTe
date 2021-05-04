@@ -4,9 +4,10 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
-public class Solution {
+class KakaoThanksGivingDay {
 	static DecimalFormat form = new DecimalFormat("#.###");
 	public static void main(String[] args) {
 		
@@ -109,4 +110,5 @@ public class Solution {
     	
     	return max;
     }
+    
 }

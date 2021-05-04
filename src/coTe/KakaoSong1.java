@@ -27,7 +27,7 @@ class KakaoSong1 { // 테스트케이스 27 성공 못한 소스코드
         int songTime = 0;
         String songName ="";	
         String songMelody ="";
-        
+    
         for(String str : musicinfos) {
         	
         	String[] tempArr = str.split(":|,");
@@ -64,14 +64,12 @@ class KakaoSong1 { // 테스트케이스 27 성공 못한 소스코드
     
         	if(tMelody.length() <= melody.length()) { 
         		
-        		if(melody.substring(0, tMelody.length()).equals(tMelody)) {
-       			
+        		if(melody.contains(tMelody)) {
         			posSong.put(tMelody.length(), sName);
         		}
         		
         	} else {
         		
-
         		if(tMelody.contains(melody)) {
         			posSong.put(tMelody.length(), sName);
         		}
@@ -82,11 +80,6 @@ class KakaoSong1 { // 테스트케이스 27 성공 못한 소스코드
         if(posSong.isEmpty()) {
         	return "(None)";
         } else {
-        	
-//        	TreeMap<Integer, String> treeMap = new TreeMap<>(Collections.reverseOrder());
-//        	treeMap.putAll(posSong);
-//        	
-//        	answer = treeMap.get(treeMap.firstKey());
         	
         	Object[] keySet = posSong.keySet().toArray();
         	Arrays.sort(keySet, Collections.reverseOrder());
