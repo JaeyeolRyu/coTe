@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-class Solution {
+class KaKaoSearchRoute {
 	
 	public static void main(String[] args) throws Exception {
 		

@@ -10,7 +10,7 @@ class KakaoSusik {
 
 	public static void main(String[] args) {
 
-		String expression = "";
+		String expression = "100-200*300-500+20";
 		System.out.println(expression);
 		long answer = solution(expression);
 
@@ -61,6 +61,7 @@ class KakaoSusik {
 			int operSize) {
 
 		if (operSize == depth) {
+			System.out.println();
 			List<Long> cpNumSet = new ArrayList<>(numSet);
 			List<String> cpOperSet = new ArrayList<>(operSet);
 			calc(cpNumSet, cpOperSet, oper);
@@ -68,11 +69,11 @@ class KakaoSusik {
 		}
 
 		for (int i = 0; i < operSize; i++) {
-
 			if (!visit[i]) {
 
 				visit[i] = true;
 				oper[depth] = operCnt.get(i);
+				System.out.println(oper[depth]);
 				combOper(numSet, operSet, operCnt, oper, depth + 1, operSize);
 				visit[i] = false;
 			}
