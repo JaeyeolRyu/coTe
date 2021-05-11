@@ -2,7 +2,7 @@ package coTe;
 
 import java.util.Arrays;
 
-class Solution1 {
+class KK2 {
 
 	public static void main(String[] args) {
 		

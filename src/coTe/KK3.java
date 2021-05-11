@@ -1,12 +1,11 @@
 package coTe;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Stack;
 
-class Solution3 {
+class KK3 {
 	
 	public static void main(String[] args) {
 		
@@ -19,19 +18,34 @@ class Solution3 {
 		
 	}
     public static String solution(int n, int k, String[] cmd) {
-        StringBuilder sb = new StringBuilder();
+        String answer = "";
         List<Integer> friendsList = new ArrayList<Integer>();
         Stack<Integer> idxStack = new Stack<>();
         Stack<Integer> valueStack = new Stack<>();
-        
+
+        int[] cArr = new int[cmd.length];
         for(int i = 0 ; i < n; i++) {
         	
         	friendsList.add(i);
         	
         }
-        
+        int cPoint = 0;
+       
+        for(int i = 0; i < cmd.length; i++) {
+        	System.out.println(i+"번쨰");
+        	if(cmd[i].charAt(0) == 'C') {
+        		cArr[cPoint] = i;
+        		cPoint++;
+        	} else if(cmd[i].charAt(0) == 'Z') {
+        		cPoint--;
+        		cArr[cPoint] = 0;
+        	}
+        }
+        System.out.println(Arrays.toString(cArr));
         int idx = k;
+        cPoint = 0;
         int i = 0;
+        
         for(String str : cmd) {
         	System.out.println(i+"번쨰");
         	String[] tempArr = str.split(" ");
@@ -48,28 +62,34 @@ class Solution3 {
 				idx += Integer.parseInt(tempArr[1]);
 				System.out.println("D후 : " + idx);
 				break;
+				
 			case "C":
-				System.out.println("C : "+ idx + " " + friendsList.get(idx));
-				idxStack.add(idx);
-				valueStack.add(friendsList.get(idx));
-				friendsList.remove(idx);
-				
-				if(idx == friendsList.size()) {
-					idx--;
+				--n;
+				if(cArr[cPoint] != i ) {
+					if(idx == n) {
+						idx--;
+					}
+					break;
 				}
 				
+					System.out.println("C : "+ idx + " " + friendsList.get(idx));
+					idxStack.add(idx);
+					valueStack.add(friendsList.get(idx));
+					friendsList.remove(idx);
+					
+					if(idx == friendsList.size()) {
+						idx--;
+					}
+					cPoint++;
 				break;
-			case "Z":				
-				if(idxStack.peek()<= idx) {
-					idx++;
-				}
 				
-				friendsList.add(idxStack.pop(),valueStack.pop());
-				System.out.println("Z : "+ idx + " " + friendsList.get(idx));
-				
+			case "Z":			
+
+
 				break;
 
         	}
+        	
         	i++;
         }
         
@@ -77,14 +97,14 @@ class Solution3 {
         	
         	if(friendsList.contains(num)) {
         		
-        		sb.append("O");
+        		answer += "O";
         		
         	} else {
-        		sb.append("X");
+        		answer += "X";
         	}
 	
         }
-       
-        return sb.toString();
+        
+        return answer;
     }
 }

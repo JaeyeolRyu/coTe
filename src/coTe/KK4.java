@@ -1,12 +1,24 @@
 package coTe;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Stack;
 
-class Solution4 {
-
-    public String solution(int n, int k, String[] cmd) {
-       
+class KK4 {
+	
+	public static void main(String[] args) {
+		
+		int n = 8; 
+		int k = 2;
+		String[] cmd = {"D 2", "C", "U 3", "C", "D 4", "C", "U 2", "Z", "Z", "U 1", "C"};
+		
+		String ans = solution(n, k, cmd);
+		System.out.println(ans);
+		
+	}
+    public static String solution(int n, int k, String[] cmd) {
         StringBuilder sb = new StringBuilder();
         List<Integer> friendsList = new ArrayList<Integer>();
         Stack<Integer> idxStack = new Stack<>();
@@ -21,18 +33,23 @@ class Solution4 {
         int idx = k;
         int i = 0;
         for(String str : cmd) {
-        	
+        	System.out.println(i+"번쨰");
         	String[] tempArr = str.split(" ");
         	
         	switch (tempArr[0]) {
 			case "U":
+				System.out.println("U전 : " + idx);
 				idx -= Integer.parseInt(tempArr[1]);
+				System.out.println("U후 : " + idx);
 				break;
 
 			case "D":
+				System.out.println("D전 : " + idx);
 				idx += Integer.parseInt(tempArr[1]);
+				System.out.println("D후 : " + idx);
 				break;
 			case "C":
+				System.out.println("C : "+ idx + " " + friendsList.get(idx));
 				idxStack.add(idx);
 				valueStack.add(friendsList.get(idx));
 				friendsList.remove(idx);
@@ -48,6 +65,7 @@ class Solution4 {
 				}
 				
 				friendsList.add(idxStack.pop(),valueStack.pop());
+				System.out.println("Z : "+ idx + " " + friendsList.get(idx));
 				
 				break;
 
