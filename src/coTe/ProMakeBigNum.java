@@ -2,16 +2,16 @@ package coTe;
 
 class ProMakeBigNum {
 
-	public static void main(String[] args) {
-
-		String number = "4177252841";
-
-		int k = 4;
-
-		String answer = solution(number, k);
-
-		System.out.println(answer);
-	}
+//	public static void main(String[] args) {
+//
+//		String number = "4177252841";
+//
+//		int k = 4;
+//
+//		String answer = solution(number, k);
+//
+//		System.out.println(answer);
+//	}
 
 	public static String solution(String number, int k) {
 		String answer = "";
