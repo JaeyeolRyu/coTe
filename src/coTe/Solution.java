@@ -1,49 +1,61 @@
 package coTe;
 
-import java.util.Arrays;
-
 class Solution {
-
-	public static void main(String[] args) {
-
-		int n = 4;
-		int[] ans = solution(n);
-		System.out.println(Arrays.toString(ans));
-
+	static int[][] board =	{{1, 1, 1, 1, 1},
+			{1, 1, 1, 1, 1},
+			{1, 1, 1, 1, 1},
+			{0, 0, 1, 1, 1}};
+	
+	public static void main( String[] args) {
+		
+		int ans = solution(board);
+		System.out.println(ans);
+		
 	}
-
-	public static int[] solution(int n) {
-		int total = n * (n + 1) / 2;
-		int[] answer = new int[total];
-		int x = -1;
-		int y = 0;
-		int idx = 1;
-		int[][] arr = new int[n][n];
-
-		for (int i = 0; i < n; i++) {
-			for (int j = i; j < n; j++) {
-
-				if (i % 3 == 0) {
-					x++;
-				} else if (i % 3 == 1) {
-					y++;
-				} else {
-					x--;
-					y--;
-				}
-				arr[x][y] = idx++;
-			}
-		}
-
-		int num = 0;
-		for (int i = 0; i < n; i++) {
-			for (int j = 0; j < i + 1; j++) {
-
-				answer[num] = arr[i][j];
-				num++;
-			}
-		}
-
+	public static int solution(int[][] board) {
+		int answer = 0;
+		//this.board = board;
+		
+		answer = findSquare(Math.min(board.length, board[0].length));
+		
 		return answer;
 	}
+	
+	public static int findSquare(int size) {
+
+		int idx = board.length-size;
+		int x = 0;
+		int y = 0;
+		int j = 0;
+		while(x <= idx) {
+			
+			for(int i = x; i < size+x; i++) {
+				
+				y = 0;
+				
+				while(y <= idx) {
+					
+					for(j = y; j < size+y; j++) {
+						
+						if(board[i][j] == 0) {
+							
+							break;
+						}
+						
+					}
+					if(j == size+y && i == size+x-1) {
+						
+						return size*size;
+					}
+					
+					y++;
+				}
+		
+			}
+			x++;
+		}
+		
+		return findSquare(size-1);
+	}
+	
 }
