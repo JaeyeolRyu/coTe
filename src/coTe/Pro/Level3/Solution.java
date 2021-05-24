@@ -1,78 +1,198 @@
 package coTe.Pro.Level3;
 
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.PriorityQueue;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 class Solution {
-	public int solution(int[][] jobs) {
-		int answer = 0;
-		int timeIdx = 0;
-		int totalTime = 0;
 
-		LinkedList<Job> waitingQ = new LinkedList<>();
+	static char[][] map;
+	static List<Character> cardList = new ArrayList<>();
+	static Map<Character, String> idxMap = new HashMap<Character, String>();
+	static int m;
+	static int n;
 
-		PriorityQueue<Job> procPQ = new PriorityQueue<>();
+	public static void main(String[] args) {
 
-		for (int[] temp : jobs) {
+		int mm = 1;
+		int nn = 12;
+		String[] board = {"ACBDFGGFDBCA"};
+		String ans = solution(mm, nn, board);
 
-			waitingQ.add(new Job(temp[0], temp[1]));
+		System.out.println(ans);
 
+	}
+
+	public static String solution(int mm, int nn, String[] board) {
+		String answer = "";
+//        this.m = m;
+//        this.n = n;
+
+		m = mm;
+		n = nn;
+
+		map = new char[m][n];
+
+		for (int i = 0; i < m; i++) {
+			for (int j = 0; j < n; j++) {
+				map[i][j] = board[i].charAt(j);
+				if (!cardList.contains(map[i][j]) && board[i].charAt(j) != '*' && board[i].charAt(j) != '.') {
+
+					cardList.add(map[i][j]);
+					
+					idxMap.put(map[i][j], i + " " + j);
+
+				} else {
+
+					idxMap.put(map[i][j], idxMap.get(map[i][j]) + " " + i + " " + j);
+
+				}
+			}
 		}
 
-		Collections.sort(waitingQ, new Comparator<Job>() {
+		Collections.sort(cardList);
+		int cardCnt = cardList.size();
 
-			@Override
-			public int compare(Job o1, Job o2) {
-				return o1.start - o2.start;
-			}
-		});
+		String ans = searchCard(0);
 
-		timeIdx = waitingQ.peek().start;
-		int cnt = 0;
+		if (ans.length() == cardCnt) {
 
-		while (cnt < jobs.length) {
-
-			while (!waitingQ.isEmpty() && waitingQ.peek().start <= timeIdx) {
-				procPQ.offer(waitingQ.pollFirst());
-			}
-
-			if (!procPQ.isEmpty()) {
-
-				Job job = procPQ.poll();
-				timeIdx += job.time;
-				totalTime += timeIdx - job.start;
-				cnt++;
-
-			} else {
-
-				timeIdx++;
-
-			}
-
+			answer = ans;
+		} else {
+			answer = "IMPOSSIBLE";
 		}
-		answer = totalTime / jobs.length;
 
 		return answer;
 	}
 
-	class Job implements Comparable<Job> {
+	public static String searchCard(int start) {
 
-		int start;
-		int time;
+		StringBuilder sb = new StringBuilder();
 
-		Job(int start, int time) {
+		for (int i = start; i < cardList.size(); i++) {
 
-			this.start = start;
-			this.time = time;
+			if (cardList.get(i) != ' ') {
+				char card = cardList.get(i);
+				String[] idx = idxMap.get(card).split(" ");
+				int x1 = Integer.parseInt(idx[0]);
+				int y1 = Integer.parseInt(idx[1]);
+				int x2 = Integer.parseInt(idx[2]);
+				int y2 = Integer.parseInt(idx[3]);
+
+				boolean isPossible = searchPair(x1, y1, x2, y2, card);
+
+				if (isPossible) {
+
+					map[x1][y1] = '.';
+					map[x2][y2] = '.';
+					cardList.remove(i);
+					i = -1;
+					sb.append(card);
+				}
+			}
 
 		}
-
-		@Override
-		public int compareTo(Job o) {
-			return this.time - o.time;
-		}
+		return sb.toString();
 
 	}
+
+	public static boolean searchPair(int x1, int y1, int x2, int y2, char card) {
+
+		boolean dir1 = true;
+		boolean dir2 = true;
+
+		for (int i = x1; i < x2; i++) {
+
+			if (map[i + 1][y1] == card) {
+				return true;
+			} else if (map[i + 1][y1] != '.') {
+				dir1 = false;
+				break;
+			}
+
+		}
+
+		if (dir1) { // dir1방향에서 x 좌표사이에 장애물 없는경우 y좌표 체크
+
+			if (y1 < y2) {
+
+				for (int i = y1; i < y2; i++) {
+
+					if (map[x2][i + 1] == card) {
+						return true;
+
+					} else if (map[x2][i + 1] != '.') {
+						break;
+					}
+
+				}
+
+			} else {
+
+				for (int i = y1; i > y2; i--) {
+
+					if (map[x2][i - 1] == card) {
+						return true;
+
+					} else if (map[x2][i - 1] != '.') {
+						break;
+					}
+
+				}
+
+			}
+		}
+		// dir2방향 체크시작
+
+		for (int i = x2; i > x1; i--) {
+
+			if (map[i - 1][y2] == card) {
+				return true;
+			} else if (map[i - 1][y2] != '.') {
+				dir2 = false;
+				break;
+			}
+
+		}
+
+		if (dir2) {
+
+			if (y1 == y2) {
+				return true;
+			} else if (y1 < y2) {
+
+				for (int i = y2; i > y1; i--) {
+
+					if (map[x1][i - 1] == card) {
+						return true;
+
+					} else if (map[x1][i - 1] != '.') {
+						break;
+					}
+
+				}
+
+			} else {
+
+				for (int i = y2; i < y1; i++) {
+
+					if (map[x1][i + 1] == card) {
+						return true;
+
+					} else if (map[x1][i + 1] != '.') {
+						break;
+					}
+
+				}
+
+			}
+
+		}
+		
+		return false;
+
+	}
+
 }
