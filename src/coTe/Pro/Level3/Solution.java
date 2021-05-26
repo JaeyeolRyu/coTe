@@ -1,32 +1,38 @@
 package coTe.Pro.Level3;
 
+import java.util.Arrays;
+
 class Solution {
-	int[][] dp;
-    public int solution(int[][] triangle) {
+	
+	int INF = 9999999;
+    public int solution(int n, int m, int[][] edge_list, int k, int[] gps_log) {
         int answer = 0;
         
-        dp = new int[triangle.length][triangle.length];
-       
+        int[][] roadArr = new int[n+1][n+1];
         
-        for(int i = 0 ; i < triangle.length; i++) {
-        	dp[triangle.length-1][i] = triangle[triangle.length-1][i];
+        for(int i = 1 ; i < n+1; i++) {
+        	Arrays.fill(roadArr[i], INF);
         }
         
-        cal( triangle.length-1 ,triangle);
+        for(int i = 0 ; i < edge_list.length; i++) {
+        	
+        	roadArr[edge_list[i][0]][edge_list[i][1]] = 1;
+        	roadArr[edge_list[i][1]][edge_list[i][0]] = 1;
+        	
+        }
         
-        return dp[0][0];
+        searchRoad(1, n, roadArr);
+        
+        return answer;
     }
     
-    public void cal(int idx, int[][] triangle) {
+    public void searchRoad(int start, int end, int[][] roadArr) {
+   
     	
-    	if(idx == 0) {
-    		return;
-    	}
-    	for(int i = 0; i < idx; i++) {
-    		
-    		dp[idx-1][i] = Math.max(dp[idx][i], dp[idx][i+1]) + triangle[idx-1][i];
-    	}
     	
-    	cal(idx-1, triangle);
+    	
     }
+    
+    
+    
 }
