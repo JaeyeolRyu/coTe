@@ -2,7 +2,7 @@ package coTe.Pro.Level3;
 
 import java.util.Arrays;
 
-class Solution {
+class KakaoGPSFail {
 	
 	int INF = 9999999;
     public int solution(int n, int m, int[][] edge_list, int k, int[] gps_log) {

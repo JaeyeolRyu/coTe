@@ -3,7 +3,6 @@ package coTe.Pro.Level3;
 class ProIntegerTriangle {
 	int[][] dp;
     public int solution(int[][] triangle) {
-        int answer = 0;
         
         dp = new int[triangle.length][triangle.length];
        
