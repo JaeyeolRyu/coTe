@@ -1,4 +1,4 @@
-package coTe.Pro.Level3;
+package coTe.Pro.Kakao;
 
 class KakaoWalkersHeaven {
 	static int MOD = 20170805;

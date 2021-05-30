@@ -1,67 +1,124 @@
 package coTe.Pro.Level3;
 
-import java.util.List;
+import java.util.Arrays;
+import java.util.Comparator;
 
 class Solution {
-	int[] parent;
-    public long solution(int[] a, int[][] edges) {
-        long answer = -2;
-        int[] cntIdx = new int[a.length];
-        parent = new int[a.length];
-//        List<Integer> 
-        
-        for(int i = 0 ; i < a.length; i++) {
-        	parent[i] = i;
-        }
-        
-        for(int[] edge : edges) {
-        	
-        	int num1 = edge[0];
-        	int num2 = edge[1];
-        	cntIdx[num1]++;
-        	cntIdx[num2]++;
 
-        	int x = find(num1);
-        	int y = find(num2);
-        	
-        	if(x != y) {
-        		union(num1, num2);
-        	}
-        	
-        }
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        return answer;
-    }
-    
-    public int find(int idx) {
-    	
-    	if(parent[idx] == idx) {
-    		return idx;
-    	}
-    	
-    	return parent[idx] = find(parent[idx]);
-    }
-    
-    public void union(int x, int y) {
-    	
-    	int p1 = find(x);
-    	int p2 = find(y);
-    	
-    	if(p1 > p2) {
-    		parent[p1] = p2;
-    	} else {
-    		parent[p2] = p1;
-    	}
-    	
-    }
-    
-    
+	static long[] totalTime;
+
+	public static void main(String[] args) {
+
+		String play_time = "02:03:55";
+		String adv_time = "00:14:15";
+		String[] logs = { "01:20:15-01:45:14", "00:40:31-01:00:00", "00:25:50-00:48:29", "01:30:59-01:53:29",
+				"01:37:44-02:02:30" };
+
+		String ans = solution(play_time, adv_time, logs);
+		System.out.println(ans);
+
+	}
+
+	public static String solution(String play_time, String adv_time, String[] logs) {
+		String answer = "";
+
+		totalTime = new long[logs.length];
+		int[][] timeArr = new int[logs.length][2];
+
+		for (int i = 0; i < logs.length; i++) {
+
+			String[] log = logs[i].split(":|-");
+
+			int startTime = Integer.parseInt(log[0]) * 3600 + Integer.parseInt(log[1]) * 60 + Integer.parseInt(log[2]);
+			int endTime = Integer.parseInt(log[3]) * 3600 + Integer.parseInt(log[4]) * 60 + Integer.parseInt(log[5]);
+			timeArr[i][0] = startTime;
+			timeArr[i][1] = endTime;
+
+		}
+		String[] tempAd = adv_time.split(":");
+		int adTime = Integer.parseInt(tempAd[0]) * 3600 + Integer.parseInt(tempAd[1]) * 60
+				+ Integer.parseInt(tempAd[2]);
+
+		String[] tempPlay = play_time.split(":");
+		int playTime = Integer.parseInt(tempPlay[0]) * 3600 + Integer.parseInt(tempPlay[1]) * 60
+				+ Integer.parseInt(tempPlay[2]);
+
+		Arrays.sort(timeArr, new Comparator<int[]>() {
+
+			@Override
+			public int compare(int[] o1, int[] o2) {
+
+				if (o1[0] == o2[0]) {
+					return o1[1] - o2[1];
+				} else {
+
+					return o1[0] - o2[0];
+				}
+			}
+		});
+
+		if (timeArr[0][0] + adTime > playTime) {
+
+			int tempTime = playTime - adTime;
+
+			return String.format("%02d", tempTime / 3600) + ":" + String.format("%02d", tempTime / 60) + ":"
+					+ String.format("%02d", tempTime % 60);
+
+		}
+
+		searchTime(timeArr, adTime);
+
+		int idx = 0;
+		long time = 0;
+		for (int i = 0; i < totalTime.length; i++) {
+
+			if (totalTime[i] > time) {
+
+				idx = i;
+				time = totalTime[i];
+
+			}
+
+		}
+
+		String[] tempStr = logs[idx].split("-");
+		answer = tempStr[0];
+
+		return answer;
+	}
+
+	public static void searchTime(int[][] timeArr, int adTime) {
+
+		for (int i = 0; i < timeArr.length; i++) {
+			long timeCnt = 0;
+			int startTime = timeArr[i][0];
+			int plusAdTime = startTime + adTime;
+
+			for (int j = 0; j <= i; j++) {
+
+				if (startTime < timeArr[j][1]) {
+
+					timeCnt += Math.min(timeArr[j][1], plusAdTime) - startTime;
+
+				}
+
+			}
+
+			for (int k = i + 1; k < timeArr.length; k++) {
+
+				if (plusAdTime > timeArr[k][0]) {
+
+					timeCnt += plusAdTime - timeArr[k][0];
+
+				} else {
+					break;
+				}
+
+			}
+
+			totalTime[i] = timeCnt;
+		}
+
+	}
+
 }

@@ -48,7 +48,12 @@ public class KakaoThanksGivingDay1 {
     		}
     	
     	});
-
+    	
+    	for(int p = 0 ; p < timeArr.length; p++) {
+    		
+    		System.out.println(Arrays.toString(timeArr[p]));
+    		
+    	}
         answer = throughtput(timeArr);
         
         return answer;
