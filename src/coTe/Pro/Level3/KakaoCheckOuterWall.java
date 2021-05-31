@@ -5,16 +5,16 @@ class KakaoCheckOuterWall {
 	static boolean[] visit;
 	static int[][] weakArr;
 	static int min = -1;
-	
+
 	public static void main(String[] args) {
-		
+
 		int n = 12;
-		int[] weak = {1,5,6,10};
-		int[] dist = {1,2,3,4};
-		
+		int[] weak = { 1, 5, 6, 10 };
+		int[] dist = { 1, 2, 3, 4 };
+
 		int ans = solution(n, weak, dist);
 		System.out.println(ans);
-		
+
 	}
 
 	public static int solution(int n, int[] weak, int[] dist) {
