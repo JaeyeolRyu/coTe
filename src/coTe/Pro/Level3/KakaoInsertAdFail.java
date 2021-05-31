@@ -3,7 +3,7 @@ package coTe.Pro.Level3;
 import java.util.Arrays;
 import java.util.Comparator;
 
-class Solution {
+class KakaoInsertAdFail {
 
 	static long[] totalTime;
 
@@ -11,8 +11,7 @@ class Solution {
 
 		String play_time = "02:03:55";
 		String adv_time = "00:14:15";
-		String[] logs = { "01:20:15-01:45:14", "00:40:31-01:00:00", "00:25:50-00:48:29", "01:30:59-01:53:29",
-				"01:37:44-02:02:30" };
+		String[] logs = { "01:20:15-01:45:14", "00:25:50-00:48:29", "00:40:31-01:00:00", "01:37:44-02:02:30", "01:30:59-01:53:29" };
 
 		String ans = solution(play_time, adv_time, logs);
 		System.out.println(ans);
@@ -61,7 +60,7 @@ class Solution {
 
 			int tempTime = playTime - adTime;
 
-			return String.format("%02d", tempTime / 3600) + ":" + String.format("%02d", tempTime / 60) + ":"
+			return String.format("%02d", tempTime / 3600) + ":" + String.format("%02d", (tempTime % 3600) / 60) + ":"
 					+ String.format("%02d", tempTime % 60);
 
 		}
@@ -81,8 +80,9 @@ class Solution {
 
 		}
 
-		String[] tempStr = logs[idx].split("-");
-		answer = tempStr[0];
+		
+		answer = String.format("%02d", timeArr[idx][0] / 3600) + ":" + String.format("%02d", (timeArr[idx][0] % 3600) / 60) + ":"
+				+ String.format("%02d", timeArr[idx][0] % 60);;
 
 		return answer;
 	}
