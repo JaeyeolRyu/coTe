@@ -2,7 +2,7 @@ package coTe.Pro.Level2;
 
 import java.util.Arrays;
 
-class Solution {
+class ProArrangement {
 	
 	public static void main(String[] args) {
 		
