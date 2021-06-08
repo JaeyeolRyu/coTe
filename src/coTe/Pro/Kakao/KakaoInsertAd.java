@@ -1,4 +1,4 @@
-package coTe.Pro.Level3;
+package coTe.Pro.Kakao;
 
 class KakaoInsertAd {
 	public String solution(String play_time, String adv_time, String[] logs) {
