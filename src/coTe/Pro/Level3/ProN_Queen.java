@@ -1,6 +1,6 @@
 package coTe.Pro.Level3;
 
-class Solution {
+class ProN_Queen {
 
 	static int cnt;
 	static int[] col;
