@@ -1,76 +1,28 @@
 package coTe.Pro.Level4;
 
-import java.util.*;
-
 class Solution {
-	static int ANSWER = Integer.MAX_VALUE;
-	static Map<Character, List<String>> wordMap = new HashMap<Character, List<String>>();
-	static int[] dp;
-	public static void main(String[] args) {
-		
-		String[] strs = {"app","ap","p","l","e","ple","pp"};
-		String t = "apple";
-		
-		int ans = solution(strs, t);
-		System.out.println(ans);
-		
-	}
+	public int solution(int[] money) {
+		int answer = 0;
 
-	public static int solution(String[] strs, String t) {
-		int answer = -1;
-		dp = new int[t.length()];
-		for (String str : strs) {
-			char temp = str.charAt(0);
+		int[] dp1 = new int[money.length];
+		int[] dp2 = new int[money.length];
 
-			if (!wordMap.containsKey(str.charAt(0))) {
+		dp1[0] = dp1[1] = money[0];
+		dp2[1] = money[1];
+				
+		for (int i = 2; i < money.length - 1; i++) {
 
-				wordMap.put(temp, new ArrayList<String>());
-				wordMap.get(temp).add(str);
+			dp1[i] = Math.max(dp1[i - 2] + money[i], dp1[i - 1]);
+			dp2[i] = Math.max(dp2[i - 2] + money[i], dp2[i - 1]);
 
-			} else {
-				wordMap.get(temp).add(str);
-			}
 		}
 
-		searchCnt(t, 0);
-		if (ANSWER != Integer.MAX_VALUE) {
-			answer = ANSWER;
-		}
+		int idx = money.length - 1;
+
+		dp2[idx] = Math.max(dp2[idx - 2] + money[idx], dp2[idx - 1]);
+
+		answer = Math.max(dp1[idx - 1], dp2[idx]);
 
 		return answer;
 	}
-
-	public static void searchCnt(String str, int cnt) {
-
-		if (str.length() == 0) {
-			ANSWER = Math.min(cnt, ANSWER);
-			return;
-		}
-		char firstWord = str.charAt(0);
-
-		List<String> wordList = wordMap.get(firstWord);
-
-		for (int i = 0; i < wordList.size(); i++) {
-
-			String word = wordList.get(i);
-			boolean isPos = true;
-			if (word.length() > str.length()) {
-				continue;
-			}
-
-			for (int j = 0; j < word.length(); j++) {
-				if (word.charAt(j) != str.charAt(j)) {
-					isPos = false;
-					break;
-				}
-			}
-
-			if (isPos) {
-				searchCnt( str.substring(word.length()), cnt + 1);
-			}
-
-		}
-
-	}
-
 }
