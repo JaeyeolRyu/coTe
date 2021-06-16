@@ -1,77 +1,106 @@
 package coTe.Pro.Level4;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.PriorityQueue;
 
 class Solution {
-	static int[][] maxDP;
-	static int[][] minDP;
-	
+
 	public static void main(String[] args) {
 
-		String[] arr = { "1", "-", "3", "+", "5", "-", "8"};
-		
-		int answer = solution(arr);
+		int[] food_times = { 2,2,2,2,2};
+		long k = 9;
 
-		System.out.println(answer);
-
+		int ans = solution(food_times, k);
+		System.out.println();
+		System.out.println(ans);
 	}
 
-	public static int solution(String arr[]) {
-		
-		maxDP = new int[(arr.length+1)/2][(arr.length+1)/2];
-		minDP = new int[(arr.length+1)/2][(arr.length+1)/2];
-		
-		for(int i = 0; i < (arr.length+1)/2; i++) {
-			Arrays.fill(maxDP[i], -987654321);
-			Arrays.fill(minDP[i], 987654321);
+	public static int solution(int[] food_times, long k) {
+		int answer = -1;
+		long sumTime = 0;
+		PriorityQueue<Food> pq = new PriorityQueue<>();
+
+		for (int i = 0; i < food_times.length; i++) {
+			pq.add(new Food(i + 1, food_times[i]));
+			sumTime += food_times[i];
 		}
+
+		int times = 0;
 		
-		for(int i = 0 ; i < arr.length; i+=2) {
-			maxDP[i/2][i/2] = Integer.parseInt(arr[i]); 
-			minDP[i/2][i/2] = Integer.parseInt(arr[i]);
+		if(sumTime <= k ) {
+			return answer;
 		}
-		
-		for(int len = 1; len < (arr.length+1)/2; len++ ) {
-			
-			for(int i = 0 ; i + len < (arr.length+1)/2; i++) {
-				
-				int j = i + len;
-				
-				for(int k = 0; k < len; k++) {
-					
-					if(arr[2*(i+k)+1].equals("-")) {
-						
-						maxDP[i][j] = Math.max(maxDP[i][j], maxDP[i][i+k] - minDP[i+k+1][j]);
-						minDP[i][j] = Math.min(minDP[i][j], minDP[i][i+k] - maxDP[i+k+1][j]);
-								
-					} else {
-						
-						maxDP[i][j] = Math.max(maxDP[i][j], maxDP[i][i+k] + maxDP[i+k+1][j]);
-						minDP[i][j] = Math.min(minDP[i][j], minDP[i][i+k] + minDP[i+k+1][j]);
-						
-					}
-					
+
+		while (!pq.isEmpty()) {
+
+			Food food = pq.peek();
+			int foodCnt = pq.size();
+
+			if (times == food.remain) {
+				pq.poll();
+				continue;
+			}
+
+			if (foodCnt < k) {
+
+				int remain = food.remain;
+
+				while (remain != times && foodCnt < k) {
+					k -= pq.size();
+					times++;
+
 				}
 				
-			}
-			
-		}
-		
-		for(int i = 0; i <(arr.length+1)/2; i++ ) {
-			
-			for(int j = 0; j <(arr.length+1)/2; j++ ) {
+				if(remain == times) {
+					pq.poll();
+				}
 				
-				System.out.println(i+" "+j + "  max값 = " + maxDP[i][j] );
-				System.out.println(i+" "+j + "  min값 = " + minDP[i][j] );
-				
+
+			} else { // foodCnt >= k 인경우
+
+				List<Food> foodList = new ArrayList<>();
+
+				while (!pq.isEmpty()) {
+					foodList.add(pq.poll());
+				}
+
+				Collections.sort(foodList, new Comparator<Food>() {
+
+					@Override
+					public int compare(Food o1, Food o2) {
+						return o1.idx - o2.idx;
+					}
+				});
+
+				answer = foodList.get((int) k % foodList.size()).idx;
+
 			}
-			
-			
+
 		}
-		
-		
-		
-		return maxDP[0][(arr.length-1)/2];
+
+		return answer;
 	}
 
+	static class Food implements Comparable<Food> {
+
+		int idx;
+		int remain;
+
+		public Food(int idx, int remain) {
+
+			this.idx = idx;
+			this.remain = remain;
+
+		}
+
+		@Override
+		public int compareTo(Food other) {
+
+			return this.remain - other.remain;
+		}
+
+	}
 }
