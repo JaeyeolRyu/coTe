@@ -20,7 +20,7 @@ class ProN_Queen {
 
 			col = new int[n];
 			col[0] = i;
-			
+
 			searchQueen(n, 1);
 
 		}

@@ -1,6 +1,6 @@
 package coTe.Pro.Level1;
 
-class Solution {
+class ProPlusMinus {
 	int ans = 0;
 
 	public int solution(int left, int right) {

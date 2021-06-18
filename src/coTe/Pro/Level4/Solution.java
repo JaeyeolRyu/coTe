@@ -1,5 +1,15 @@
 package coTe.Pro.Level4;
 
-public class Solution {
-
+class Solution {
+    public int solution(int n, int m, int[][] timetable) {
+        int answer = 0;
+        
+        
+        
+        
+        
+        
+        
+        return answer;
+    }
 }
