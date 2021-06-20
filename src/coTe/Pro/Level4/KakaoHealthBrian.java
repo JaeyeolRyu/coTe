@@ -1,11 +1,9 @@
 package coTe.Pro.Level4;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 
-class KakaoHealthBrianFail {
+class KakaoHealthBrian {
 
 	static int[] canPeople;
 
@@ -43,7 +41,7 @@ class KakaoHealthBrianFail {
 		}
 
 		canPeople[0] = n * n;
-		canPeople[1] = (n * n+1)/2;
+		canPeople[1] = (n * n + 1) / 2;
 		if (max == 1) {
 			return 0;
 		} else if (max == 2) {
@@ -59,7 +57,6 @@ class KakaoHealthBrianFail {
 			}
 
 			for (int i = 0; i < canPeople.length; i++) {
-				System.out.println(i+ "  " + canPeople[i]);
 				if (canPeople[i] >= max) {
 					answer++;
 				} else {
@@ -101,7 +98,7 @@ class KakaoHealthBrianFail {
 			}
 
 		}
-		
+
 		canPeople[dis] = Math.max(canPeople[dis], allotList.size());
 	}
 

@@ -1,9 +1,15 @@
 package coTe.Pro.Level3;
 
 class Pro2xnTiling {
-	int dp[];
-
-    public int solution(int n) {
+	static int dp[];
+	
+	public static void main(String[] args) {
+		
+		int n = 1;
+		System.out.println(solution(n));
+	}
+	
+    public static int solution(int n) {
         
         dp = new int[n+1];
         dp[0] = 1;
@@ -12,7 +18,7 @@ class Pro2xnTiling {
         return dp[n];
     }
     
-    public void cal(int num) {
+    public static void cal(int num) {
     	
     	for(int i = 2; i < num+1; i++) {
     		
