@@ -1,6 +1,6 @@
 package coTe.Pro.Level1;
 
-class Solution {
+class ProCalendar {
 	public String solution(int a, int b) {
 		String answer = "";
 
@@ -15,17 +15,8 @@ class Solution {
 				break;
 
 			case 4:
-				idx += 30;
-				break;
-
 			case 6:
-				idx += 30;
-				break;
-
 			case 9:
-				idx += 30;
-				break;
-
 			case 11:
 				idx += 30;
 				break;
