@@ -1,21 +1,37 @@
 package coTe.Pro.Level1;
 
-import java.util.Arrays;
-import java.util.Comparator;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 class Solution {
-    public String[] solution(String[] strings, int n) {
-    	
-    	Arrays.sort(strings);
-    	Arrays.sort(strings, new Comparator<String>() {
+	public String solution(String s) {
 
-			@Override
-			public int compare(String o1, String o2) {
-				
-				return o1.charAt(n) - o2.charAt(n);
+		List<Character> lowerList = new ArrayList<>();
+		List<Character> upperList = new ArrayList<>();
+
+		for (char c : s.toCharArray()) {
+
+			if (c >= 'a' && c <= 'z') {
+				lowerList.add(c);
+			} else {
+				upperList.add(c);
 			}
-		});
-        
-        return strings;
-    }
+
+		}
+		
+		Collections.sort(upperList, Collections.reverseOrder());
+		Collections.sort(lowerList, Collections.reverseOrder());
+
+		StringBuilder sb = new StringBuilder();
+
+		for (char c : lowerList) {
+			sb.append(c);
+		}
+		for (char c : upperList) {
+			sb.append(c);
+		}
+
+		return sb.toString();
+	}
 }
