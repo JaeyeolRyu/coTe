@@ -1,27 +1,31 @@
 package coTe.Pro.Level1;
 
+import java.util.ArrayList;
+import java.util.List;
+
 class Solution {
+
+	List<Integer> numList = new ArrayList<Integer>();
+
 	public int solution(int n) {
-		int[] dp = new int[n + 1];
 
 		for (int i = 2; i <= n; i++) {
 
 			if (calc(i)) {
-				dp[i] = dp[i - 1] + 1;
+				numList.add(i);
 			} else {
-				dp[i] = dp[i - 1];
 			}
 
 		}
 
-		return dp[n];
+		return numList.size();
 	}
 
 	public boolean calc(int num) {
 
-		for (int i = 2; i < num; i++) {
+		for (int i = 0; i < numList.size(); i++) {
 
-			if (num % i == 0) {
+			if (num % numList.get(i) == 0) {
 				return false;
 			}
 
