@@ -1,36 +1,30 @@
 package coTe.Pro.Level1;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
+import java.util.Comparator;
 
 class Solution {
+	public long solution(long n) {
 
-	List<Integer> numList = new ArrayList<Integer>();
+		String[] strArr = String.valueOf(n).split("");
 
-	public int solution(int n) {
+		Arrays.sort(strArr, new Comparator<String>() {
 
-		for (int i = 2; i <= n; i++) {
+			@Override
+			public int compare(String o1, String o2) {
 
-			if (calc(i)) {
-				numList.add(i);
-			} else {
+				return Integer.parseInt(o2) - Integer.parseInt(o1);
 			}
+		});
+
+		StringBuilder sb = new StringBuilder();
+
+		for (String str : strArr) {
+
+			sb.append(str);
 
 		}
 
-		return numList.size();
-	}
-
-	public boolean calc(int num) {
-
-		for (int i = 0; i < numList.size(); i++) {
-
-			if (num % numList.get(i) == 0) {
-				return false;
-			}
-
-		}
-
-		return true;
+		return Long.parseLong(sb.toString());
 	}
 }
