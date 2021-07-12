@@ -1,6 +1,6 @@
-package coTe;
+package chatServer;
 
-public Linux {
+public class Linux {
 
 	public static void main(String[] args) {
 	
