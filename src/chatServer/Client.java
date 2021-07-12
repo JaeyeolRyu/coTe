@@ -14,7 +14,8 @@ public class Client {
 
 	public void connect() {
 		try {
-			System.out.println("접속시도");
+			System.out.println("접속시도중");
+			System.out.println("Linux에서도 접속한다");
 			clientSocket = new Socket("192.168.164.129", 10002);
 			System.out.println("접속완료");
 		} catch (Exception e) {
