@@ -4,13 +4,14 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
- 
+import java.util.*;
+
 public class Client {
 
 	private Socket clientSocket;
 	private DataInputStream dataInputStream;
 	private DataOutputStream dataOutputStream;
-	
+
 	public void connect() {
 		try {
 			System.out.println("접속시도");
@@ -20,36 +21,68 @@ public class Client {
 			e.printStackTrace();
 		}
 	}
-	
-	public String dataRecv() {
-		
-		try {
-			return dataInputStream.readUTF();
-		} catch (Exception e) {
-		}
-		return null;
+
+	public void dataRecv() {
+		new Thread(new Runnable() {
+			boolean isThread = true;
+
+			@Override
+			public void run() {
+				while (isThread) {
+					try {
+						String recvData = dataInputStream.readUTF();
+
+						if (recvData.equals("/quit")) {
+							isThread = false;
+						} else {
+							System.out.println(" 상대방 : " + recvData);
+						}
+
+					} catch (Exception e) {
+					}
+
+				}
+			}
+		}).start();
+
 	}
-	
-	public void dataSend(String sendData) {
-		
-		try {
-			dataOutputStream.writeUTF(sendData);
-		} catch (Exception e) {
-		}
-		
+
+	public void dataSend() {
+		new Thread(new Runnable() {
+			Scanner sc = new Scanner(System.in);
+
+			@Override
+			public void run() {
+				boolean isThread = true;
+				while (isThread) {
+					try {
+
+						String sendData = sc.next();
+						if (sendData.equals("/quit")) {
+							isThread = false;
+						} else {
+							dataOutputStream.writeUTF(sendData);
+						}
+
+					} catch (Exception e) {
+					}
+
+				}
+			}
+		}).start();
+
 	}
-	
+
 	public void streamSetting() {
-		
+
 		try {
 			dataInputStream = new DataInputStream(clientSocket.getInputStream());
 			dataOutputStream = new DataOutputStream(clientSocket.getOutputStream());
 		} catch (Exception e) {
-			// TODO: handle exception
 		}
-		
+
 	}
-	
+
 	public void closeAll() {
 		try {
 			clientSocket.close();
@@ -58,15 +91,14 @@ public class Client {
 		} catch (IOException e) {
 		}
 	}
-	
+
 	public Client() {
 		connect();
 		streamSetting();
-		dataSend("안녕하세요 클라이언트입니다^^");
-		System.out.println(dataRecv());
+		dataSend();
+		dataRecv();
 	}
-	
-	
+
 	public static void main(String[] args) {
 		new Client();
 	}
